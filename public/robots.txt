@@ -1,0 +1,37 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://mstwentinity.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+Disallow: /*?*utm_*
+Disallow: /*?*ref=*
+
+# Allow important pages
+Allow: /services
+Allow: /portfolio
+Allow: /about
+
+# Allow important resources
+Allow: /assets/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.webp
+
+# Block unnecessary crawling
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /.git/
+Disallow: /.vscode/
