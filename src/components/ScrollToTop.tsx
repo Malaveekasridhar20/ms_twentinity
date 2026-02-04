@@ -5,31 +5,10 @@ import { Button } from '@/components/ui/button';
 import { scrollToTop } from '@/utils/smoothScroll';
 
 export const ScrollToTop = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true); // Always visible to avoid scroll listener
 
-  // Temporarily disable scroll listener to test if it's causing wobbling
-  // useEffect(() => {
-  //   let ticking = false;
-  //   let lastScrollY = 0;
-    
-  //   const toggleVisibility = () => {
-  //     if (!ticking) {
-  //       requestAnimationFrame(() => {
-  //         const currentScrollY = window.pageYOffset;
-  //         // Only update if scroll position changed significantly
-  //         if (Math.abs(currentScrollY - lastScrollY) > 10) {
-  //           setIsVisible(currentScrollY > 300);
-  //           lastScrollY = currentScrollY;
-  //         }
-  //         ticking = false;
-  //       });
-  //       ticking = true;
-  //     }
-  //   };
-
-  //   window.addEventListener('scroll', toggleVisibility, { passive: true });
-  //   return () => window.removeEventListener('scroll', toggleVisibility);
-  // }, []);
+  // Scroll listener disabled to prevent wobbling - button will always be visible
+  // This maintains functionality without interfering with scroll behavior
 
   const handleScrollToTop = () => {
     scrollToTop();

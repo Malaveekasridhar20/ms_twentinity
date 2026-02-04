@@ -16,7 +16,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  /* Disable all scroll-related behaviors that might cause wobbling */
+  /* Disable problematic scroll behaviors but keep animations */
   overscroll-behavior: none;
   scroll-behavior: auto !important;
 }
@@ -38,7 +38,7 @@ img {
   display: block;
 }
 
-/* Disable all animations that might interfere with scrolling */
+/* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -48,15 +48,6 @@ img {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-/* Force disable all animations temporarily to test scrolling */
-*,
-*::before,
-*::after {
-  animation: none !important;
-  transition: none !important;
-  transform: none !important;
 }
 
 @layer base {
@@ -336,28 +327,15 @@ img {
     50% { box-shadow: 0 0 40px hsl(45 100% 51% / 0.5); }
   }
 
-  /* Underline animation for links */
+  /* Underline animation for links - DISABLED for header */
   .link-underline {
     position: relative;
     display: inline-block;
   }
 
+  /* Remove underline animation from header links */
   .link-underline::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    bottom: -2px;
-    left: 0;
-    background: hsl(var(--primary));
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.3s ease;
-  }
-
-  .link-underline:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
+    display: none;
   }
 
   /* Section reveal on scroll */
