@@ -6,8 +6,7 @@ import { Footer } from '@/components/Footer';
 import { SEO } from '@/components/SEO';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
-
-import heroGeometric from '@/assets/hero-geometric.jpg';
+import bannerBg from '@/assets/black-smooth-textured-paper-background.jpg';
 
 const services = [
   {
@@ -113,9 +112,9 @@ const Services = () => {
         <section className="pt-32 pb-16 relative overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src={heroGeometric}
+              src={bannerBg}
               alt="Services Banner"
-              className="w-full h-full object-cover opacity-40"
+              className="w-full h-full object-cover opacity-60"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/60 to-background/90" />
           </div>
@@ -323,11 +322,7 @@ const Services = () => {
                   size="lg"
                   className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-8 py-6 text-lg"
                   onClick={() => {
-                    if (window.location.pathname !== '/') {
-                      window.location.href = '/#contact';
-                    } else {
-                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                    }
+                    window.open('https://wa.me/919790731131?text=Hi! I would like to get a quote for your services.', '_blank');
                   }}
                 >
                   Get Quote Now

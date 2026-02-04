@@ -19,7 +19,7 @@ import portfolio2Real from '@/assets/portfolio-2-real.png';
 import daLuxe from '@/assets/da-luxe.png';
 import jewelWebsite from '@/assets/jewel-website.png';
 import photoStudioDesign from '@/assets/photo-studio-design.png';
-import heroGeometric from '@/assets/hero-geometric.jpg';
+import bannerBg from '@/assets/black-smooth-textured-paper-background.jpg';
 
 const allProjects = [
   {
@@ -192,9 +192,9 @@ const Portfolio = () => {
         <section className="pt-32 pb-16 relative overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src={heroGeometric}
+              src={bannerBg}
               alt="Portfolio Banner"
-              className="w-full h-full object-cover opacity-40"
+              className="w-full h-full object-cover opacity-60"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/60 to-background/90" />
           </div>
@@ -428,11 +428,7 @@ const Portfolio = () => {
                   size="lg"
                   className="pulse-animation bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-8 py-6 text-lg"
                   onClick={() => {
-                    if (window.location.pathname !== '/') {
-                      window.location.href = '/#contact';
-                    } else {
-                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                    }
+                    window.open('https://wa.me/919790731131?text=Hi! I would like to get started with my project.', '_blank');
                   }}
                 >
                   Get Started Today

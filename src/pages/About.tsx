@@ -9,7 +9,7 @@ import { WhatsAppButton } from '@/components/WhatsAppButton';
 
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import aboutTeam from '@/assets/about-team.jpg';
-import heroGeometric from '@/assets/hero-geometric.jpg';
+import bannerBg from '@/assets/black-smooth-textured-paper-background.jpg';
 
 const About = () => {
   return (
@@ -57,9 +57,9 @@ const About = () => {
         <section className="pt-32 pb-16 relative overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src={heroGeometric}
+              src={bannerBg}
               alt="About Banner"
-              className="w-full h-full object-cover opacity-40"
+              className="w-full h-full object-cover opacity-60"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/60 to-background/90" />
           </div>

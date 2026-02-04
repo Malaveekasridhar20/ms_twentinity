@@ -131,6 +131,9 @@ export const PricingSection = () => {
                     : 'bg-primary text-primary-foreground hover:bg-primary/90'
                 }`}
                 size="lg"
+                onClick={() => {
+                  window.open(`https://wa.me/919790731131?text=Hi! I'm interested in the ${plan.name} plan. Can you provide more details?`, '_blank');
+                }}
               >
                 {plan.cta}
               </Button>

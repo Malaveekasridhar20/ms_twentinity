@@ -5,6 +5,7 @@ import { Footer } from '@/components/Footer';
 import { SEO } from '@/components/SEO';
 import { Palette, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import bannerBg from '@/assets/black-smooth-textured-paper-background.jpg';
 
 const colorThemes = [
   {
@@ -134,18 +135,26 @@ const Settings = () => {
       <div className="min-h-screen bg-background">
         <Navbar />
         
-        <main className="pt-24 pb-16">
-          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
-            {/* Header */}
+        {/* Hero Section */}
+        <section className="pt-32 pb-16 relative overflow-hidden">
+          <div className="absolute inset-0">
+            <img
+              src={bannerBg}
+              alt="Settings Banner"
+              className="w-full h-full object-cover opacity-60"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/60 to-background/90" />
+          </div>
+          <div className="container mx-auto px-6 relative z-10">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              transition={{ duration: 0.8 }}
+              className="text-center max-w-4xl mx-auto"
             >
               <div className="flex items-center justify-center gap-3 mb-4">
                 <Palette className="w-8 h-8 text-primary" />
-                <h1 className="text-4xl md:text-5xl font-display font-bold text-foreground">
+                <h1 className="text-4xl md:text-6xl font-display font-bold text-foreground">
                   Settings
                 </h1>
               </div>
@@ -153,6 +162,11 @@ const Settings = () => {
                 Customize your MS TWENTINITY experience with different color themes
               </p>
             </motion.div>
+          </div>
+        </section>
+        
+        <main className="pb-16">
+          <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
 
             {/* Color Themes */}
             <motion.section

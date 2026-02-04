@@ -230,7 +230,7 @@ export const HeroSection = () => {
                   isDarkTheme ? 'shadow-xl' : ''
                 }`}
                 onClick={() => {
-                  scrollToElement('contact', 80);
+                  window.open('https://wa.me/919790731131?text=Hi! I would like to get a quote for my project.', '_blank');
                 }}
               >
                 Get Quote

@@ -7,10 +7,11 @@ import { scrollToElement } from '@/utils/smoothScroll';
 import msLogo from '@/assets/ms-twentinity-logo.png';
 
 const navLinks = [
+  { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { name: 'Portfolio', href: '/portfolio' },
   { name: 'Services', href: '/services' },
-  { name: 'Contact', href: '/#contact' },
+  { name: 'Contact', href: '/contact' },
   { name: 'Settings', href: '/settings' },
 ];
 
@@ -90,7 +91,7 @@ export const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA Button */}
+          {/* CTA Button and WhatsApp */}
           <div className="hidden lg:flex items-center gap-4">
             <a href="tel:+919790731131" className="flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors">
               <Phone className="w-4 h-4" />
@@ -100,14 +101,19 @@ export const Navbar = () => {
               variant="default" 
               className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 text-lg"
               onClick={() => {
-                if (window.location.pathname !== '/') {
-                  window.location.href = '/#contact';
-                } else {
-                  scrollToElement('contact', 80);
-                }
+                window.location.href = '/contact';
               }}
             >
               Get Quote
+            </Button>
+            <Button 
+              variant="outline" 
+              className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white font-semibold px-4 text-lg"
+              onClick={() => {
+                window.open('https://wa.me/919790731131?text=Hi! I would like to know more about your digital services.', '_blank');
+              }}
+            >
+              WhatsApp
             </Button>
           </div>
 
