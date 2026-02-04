@@ -19,6 +19,9 @@ html {
   /* Disable problematic scroll behaviors but keep animations */
   overscroll-behavior: none;
   scroll-behavior: auto !important;
+  /* Mobile scroll optimizations */
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
 }
 
 body {
@@ -29,6 +32,9 @@ body {
   /* Prevent scroll chaining and bouncing */
   overscroll-behavior: none;
   overflow-x: hidden;
+  /* Mobile scroll stability */
+  -webkit-overflow-scrolling: touch;
+  position: relative;
 }
 
 /* Optimize images */
@@ -36,6 +42,24 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+/* Mobile-specific scroll fixes */
+@media (max-width: 768px) {
+  html, body {
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: auto;
+    overflow-scrolling: auto;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Disable all transforms on mobile to prevent wobbling */
+  * {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
 }
 
 /* Reduce motion for users who prefer it */
@@ -455,9 +479,9 @@ img {
     min-width: 44px;
   }
   
-  /* Optimized scrolling for mobile */
+  /* Optimized scrolling for mobile - DISABLED to prevent wobbling */
   .smooth-scroll {
-    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: auto;
   }
   
   /* Prevent text selection on UI elements */
@@ -468,10 +492,10 @@ img {
     user-select: none;
   }
   
-  /* Hardware acceleration for animations */
+  /* Hardware acceleration for animations - DISABLED on mobile */
   .gpu-accelerated {
-    transform: translateZ(0);
-    will-change: transform;
+    transform: none;
+    will-change: auto;
   }
   
   /* Optimize for mobile performance */
@@ -518,10 +542,28 @@ img {
 
 /* Mobile-specific optimizations */
 @media (max-width: 768px) {
-  /* Reduce motion for better performance on mobile */
+  /* Aggressive scroll stability fixes for mobile */
+  html, body {
+    overscroll-behavior-y: none !important;
+    -webkit-overflow-scrolling: auto !important;
+    overflow-scrolling: auto !important;
+    scroll-behavior: auto !important;
+    position: relative;
+  }
+  
+  /* Disable all transforms on mobile to prevent wobbling */
+  * {
+    -webkit-transform: none !important;
+    transform: none !important;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: auto !important;
+  }
+  
+  /* Disable problematic animations on mobile */
   .motion-reduce-mobile {
-    animation-duration: 0.3s !important;
-    transition-duration: 0.3s !important;
+    animation: none !important;
+    transition: none !important;
   }
   
   /* Optimize font loading on mobile */
@@ -529,10 +571,18 @@ img {
     font-display: swap;
   }
   
-  /* Reduce blur effects on mobile for better performance */
-  .backdrop-blur-sm {
-    backdrop-filter: none;
-    background-color: rgba(0, 0, 0, 0.8);
+  /* Remove all backdrop blur effects on mobile for better performance */
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg {
+    backdrop-filter: none !important;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+  }
+  
+  /* Disable intersection observers on mobile by making elements always visible */
+  [data-mobile-always-visible] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
