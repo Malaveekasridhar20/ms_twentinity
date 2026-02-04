@@ -137,7 +137,9 @@ const About = () => {
                   className="absolute -bottom-8 -right-8 bg-card p-6 rounded-2xl shadow-elevated border border-border"
                 >
                   <div className="text-center">
-                    <span className="block text-5xl font-display font-bold text-primary">5+</span>
+                    <span className="block text-5xl font-display font-bold text-primary">
+                      <AnimatedCounter end={5} suffix="+" />
+                    </span>
                     <span className="text-muted-foreground text-sm">Years Experience</span>
                   </div>
                 </motion.div>
@@ -168,15 +170,21 @@ const About = () => {
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-8 pt-8 border-t border-border">
                   <div className="stat-item pr-8">
-                    <span className="block text-4xl font-display font-bold text-foreground">30+</span>
+                    <span className="block text-4xl font-display font-bold text-foreground">
+                      <AnimatedCounter end={30} suffix="+" />
+                    </span>
                     <span className="text-muted-foreground text-sm">Projects Delivered</span>
                   </div>
                   <div className="stat-item pr-8">
-                    <span className="block text-4xl font-display font-bold text-foreground">5+</span>
+                    <span className="block text-4xl font-display font-bold text-foreground">
+                      <AnimatedCounter end={5} suffix="+" />
+                    </span>
                     <span className="text-muted-foreground text-sm">Years Experience</span>
                   </div>
                   <div className="stat-item">
-                    <span className="block text-4xl font-display font-bold text-foreground">100%</span>
+                    <span className="block text-4xl font-display font-bold text-foreground">
+                      <AnimatedCounter end={100} suffix="%" />
+                    </span>
                     <span className="text-muted-foreground text-sm">Dedication</span>
                   </div>
                 </div>
