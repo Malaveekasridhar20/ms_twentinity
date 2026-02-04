@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -18,37 +17,36 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    let ticking = false;
-    let lastScrollY = 0;
+  // Temporarily disable scroll listener to test if it's causing wobbling
+  // useEffect(() => {
+  //   let ticking = false;
+  //   let lastScrollY = 0;
     
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          // Only update if scroll position actually changed significantly
-          if (Math.abs(currentScrollY - lastScrollY) > 5) {
-            setIsScrolled(currentScrollY > 50);
-            lastScrollY = currentScrollY;
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
+  //   const handleScroll = () => {
+  //     if (!ticking) {
+  //       requestAnimationFrame(() => {
+  //         const currentScrollY = window.scrollY;
+  //         // Only update if scroll position actually changed significantly
+  //         if (Math.abs(currentScrollY - lastScrollY) > 5) {
+  //           setIsScrolled(currentScrollY > 50);
+  //           lastScrollY = currentScrollY;
+  //         }
+  //         ticking = false;
+  //       });
+  //       ticking = true;
+  //     }
+  //   };
     
-    // Use passive listener for better performance
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  //   // Use passive listener for better performance
+  //   window.addEventListener('scroll', handleScroll, { passive: true });
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, []);
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      {/* Temporarily disable motion animations to test scrolling */}
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 ${
           isScrolled ? 'nav-scrolled py-1' : 'py-2'
         }`}
       >
@@ -127,83 +125,63 @@ export const Navbar = () => {
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
-      </motion.nav>
+      </nav>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed inset-0 z-40 bg-background lg:hidden"
-          >
-            <div className="flex flex-col items-center justify-center h-full gap-8">
-              {navLinks.map((link, index) => (
-                link.href.startsWith('/') ? (
-                  <motion.div
-                    key={link.name}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Link
-                      to={link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-3xl font-display font-semibold text-foreground hover:text-primary transition-colors"
-                    >
-                      {link.name}
-                    </Link>
-                  </motion.div>
-                ) : (
-                  <motion.a
-                    key={link.name}
-                    href={link.href}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    onClick={(e) => {
-                      setIsMobileMenuOpen(false);
-                      if (link.href.startsWith('#')) {
-                        // If it's a hash link and we're not on the home page, navigate to home first
-                        if (window.location.pathname !== '/') {
-                          e.preventDefault();
-                          window.location.href = '/' + link.href;
-                        }
-                      }
-                    }}
+      {/* Mobile Menu - Temporarily disable animations */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-background lg:hidden">
+          <div className="flex flex-col items-center justify-center h-full gap-8">
+            {navLinks.map((link) => (
+              link.href.startsWith('/') ? (
+                <div key={link.name}>
+                  <Link
+                    to={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className="text-3xl font-display font-semibold text-foreground hover:text-primary transition-colors"
                   >
                     {link.name}
-                  </motion.a>
-                )
-              ))}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                <Button 
-                  variant="default" 
-                  size="lg" 
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 mt-4"
-                  onClick={() => {
+                  </Link>
+                </div>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={(e) => {
                     setIsMobileMenuOpen(false);
-                    if (window.location.pathname !== '/') {
-                      window.location.href = '/#contact';
-                    } else {
-                      scrollToElement('contact', 80);
+                    if (link.href.startsWith('#')) {
+                      // If it's a hash link and we're not on the home page, navigate to home first
+                      if (window.location.pathname !== '/') {
+                        e.preventDefault();
+                        window.location.href = '/' + link.href;
+                      }
                     }
                   }}
+                  className="text-3xl font-display font-semibold text-foreground hover:text-primary transition-colors"
                 >
-                  Get Quote
-                </Button>
-              </motion.div>
+                  {link.name}
+                </a>
+              )
+            ))}
+            <div>
+              <Button 
+                variant="default" 
+                size="lg" 
+                className="bg-primary text-primary-foreground hover:bg-primary/90 mt-4"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  if (window.location.pathname !== '/') {
+                    window.location.href = '/#contact';
+                  } else {
+                    scrollToElement('contact', 80);
+                  }
+                }}
+              >
+                Get Quote
+              </Button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
     </>
   );
 };

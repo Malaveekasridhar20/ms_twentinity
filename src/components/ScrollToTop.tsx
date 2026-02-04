@@ -7,28 +7,29 @@ import { scrollToTop } from '@/utils/smoothScroll';
 export const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    let ticking = false;
-    let lastScrollY = 0;
+  // Temporarily disable scroll listener to test if it's causing wobbling
+  // useEffect(() => {
+  //   let ticking = false;
+  //   let lastScrollY = 0;
     
-    const toggleVisibility = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const currentScrollY = window.pageYOffset;
-          // Only update if scroll position changed significantly
-          if (Math.abs(currentScrollY - lastScrollY) > 10) {
-            setIsVisible(currentScrollY > 300);
-            lastScrollY = currentScrollY;
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
+  //   const toggleVisibility = () => {
+  //     if (!ticking) {
+  //       requestAnimationFrame(() => {
+  //         const currentScrollY = window.pageYOffset;
+  //         // Only update if scroll position changed significantly
+  //         if (Math.abs(currentScrollY - lastScrollY) > 10) {
+  //           setIsVisible(currentScrollY > 300);
+  //           lastScrollY = currentScrollY;
+  //         }
+  //         ticking = false;
+  //       });
+  //       ticking = true;
+  //     }
+  //   };
 
-    window.addEventListener('scroll', toggleVisibility, { passive: true });
-    return () => window.removeEventListener('scroll', toggleVisibility);
-  }, []);
+  //   window.addEventListener('scroll', toggleVisibility, { passive: true });
+  //   return () => window.removeEventListener('scroll', toggleVisibility);
+  // }, []);
 
   const handleScrollToTop = () => {
     scrollToTop();
