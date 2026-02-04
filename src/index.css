@@ -13,7 +13,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -200,10 +199,6 @@ img {
 @layer base {
   * {
     @apply border-border;
-  }
-
-  html {
-    scroll-behavior: smooth;
   }
 
   body {
@@ -467,10 +462,9 @@ img {
     min-width: 44px;
   }
   
-  /* Smooth scrolling for mobile */
+  /* Optimized scrolling for mobile */
   .smooth-scroll {
     -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
   }
   
   /* Prevent text selection on UI elements */

@@ -2,28 +2,36 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { scrollToTop } from '@/utils/smoothScroll';
 
 export const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
+    let lastScrollY = 0;
+    
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const currentScrollY = window.pageYOffset;
+          // Only update if scroll position changed significantly
+          if (Math.abs(currentScrollY - lastScrollY) > 10) {
+            setIsVisible(currentScrollY > 300);
+            lastScrollY = currentScrollY;
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', toggleVisibility);
+    window.addEventListener('scroll', toggleVisibility, { passive: true });
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+  const handleScrollToTop = () => {
+    scrollToTop();
   };
 
   return (
@@ -36,7 +44,7 @@ export const ScrollToTop = () => {
           className="fixed bottom-8 right-8 z-50"
         >
           <Button
-            onClick={scrollToTop}
+            onClick={handleScrollToTop}
             size="icon"
             className="w-12 h-12 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300"
           >

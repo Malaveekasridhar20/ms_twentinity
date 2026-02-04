@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useRef, useState } from 'react';
+import { scrollToElement } from '@/utils/smoothScroll';
 import heroGeometric from '@/assets/hero-geometric.jpg';
 import { AnimatedBackground, Floating3DElements, GeometricGrid } from '@/components/AnimatedBackground';
 import { CSS3DAnimations } from '@/components/CSS3DAnimations';
@@ -229,7 +230,7 @@ export const HeroSection = () => {
                   isDarkTheme ? 'shadow-xl' : ''
                 }`}
                 onClick={() => {
-                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  scrollToElement('contact', 80);
                 }}
               >
                 Get Quote
@@ -263,6 +264,10 @@ export const HeroSection = () => {
       >
         <a
           href="#portfolio"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToElement('portfolio', 80);
+          }}
           className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full border flex items-center justify-center hover:border-primary hover:text-primary transition-all duration-300 ${
             isDarkTheme 
               ? 'border-white/40 bg-white/10 backdrop-blur-sm text-white hover:bg-primary/10 shadow-lg'

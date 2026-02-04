@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { scrollToElement } from '@/utils/smoothScroll';
 import msLogo from '@/assets/ms-twentinity-logo.png';
 
 const navLinks = [
@@ -19,17 +20,24 @@ export const Navbar = () => {
 
   useEffect(() => {
     let ticking = false;
+    let lastScrollY = 0;
     
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 50);
+          const currentScrollY = window.scrollY;
+          // Only update if scroll position actually changed significantly
+          if (Math.abs(currentScrollY - lastScrollY) > 5) {
+            setIsScrolled(currentScrollY > 50);
+            lastScrollY = currentScrollY;
+          }
           ticking = false;
         });
         ticking = true;
       }
     };
     
+    // Use passive listener for better performance
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -103,7 +111,7 @@ export const Navbar = () => {
                 if (window.location.pathname !== '/') {
                   window.location.href = '/#contact';
                 } else {
-                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  scrollToElement('contact', 80);
                 }
               }}
             >
@@ -185,7 +193,7 @@ export const Navbar = () => {
                     if (window.location.pathname !== '/') {
                       window.location.href = '/#contact';
                     } else {
-                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                      scrollToElement('contact', 80);
                     }
                   }}
                 >
