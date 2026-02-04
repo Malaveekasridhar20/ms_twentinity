@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import heroGeometric from '@/assets/hero-geometric.jpg';
 
 // Mobile optimization utilities
 export const MobileOptimization = () => {
@@ -42,7 +43,7 @@ export const MobileOptimization = () => {
     const preloadCriticalResources = () => {
       // Preload hero image
       const heroImage = new Image();
-      heroImage.src = '/src/assets/hero-geometric.jpg';
+      heroImage.src = heroGeometric;
       
       // Preload fonts
       const fontLink = document.createElement('link');

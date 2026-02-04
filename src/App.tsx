@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider } from '@/contexts/ThemeContext';
-import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { MobileOptimization, usePerformanceMonitoring } from '@/components/MobileOptimization';
 import Index from "./pages/Index";
 import Portfolio from "./pages/Portfolio";
@@ -29,7 +28,6 @@ const AppContent = () => {
   return (
     <>
       <MobileOptimization />
-      <ThemeSwitcher />
       <Toaster />
       <Sonner />
       <BrowserRouter>

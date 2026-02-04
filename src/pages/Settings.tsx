@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { SEO } from '@/components/SEO';
-import { Palette, Check, Monitor, Sun, Moon } from 'lucide-react';
+import { Palette, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const colorThemes = [
@@ -53,48 +53,73 @@ const colorThemes = [
 
 const Settings = () => {
   const [selectedTheme, setSelectedTheme] = useState('gold');
-  const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
     // Load saved theme from localStorage
     const savedTheme = localStorage.getItem('color-theme') || 'gold';
-    const savedMode = localStorage.getItem('dark-mode') !== 'false';
     setSelectedTheme(savedTheme);
-    setIsDarkMode(savedMode);
-    applyTheme(savedTheme, savedMode);
+    applyTheme(savedTheme);
   }, []);
 
-  const applyTheme = (themeId: string, darkMode: boolean) => {
+  const applyTheme = (themeId: string) => {
     const theme = colorThemes.find(t => t.id === themeId);
     if (!theme) return;
 
     const root = document.documentElement;
     
-    // Apply color theme
-    root.style.setProperty('--primary', theme.primary);
+    // Apply color theme to CSS custom properties
+    root.style.setProperty('--primary', convertToHSL(theme.primary));
     
-    // Apply dark/light mode
-    if (darkMode) {
-      root.classList.add('dark');
-      root.classList.remove('light');
-    } else {
-      root.classList.add('light');
-      root.classList.remove('dark');
-    }
+    // Update theme-specific gradients and shadows
+    root.style.setProperty('--theme-gradient', `linear-gradient(135deg, ${theme.primary} 0%, ${adjustBrightness(theme.primary, -10)} 100%)`);
+    root.style.setProperty('--theme-shadow', `0 4px 40px -10px ${theme.primary}30`);
+    
+    // Ensure dark mode is always applied
+    root.classList.add('dark');
+    root.classList.remove('light');
 
     // Save to localStorage
     localStorage.setItem('color-theme', themeId);
-    localStorage.setItem('dark-mode', darkMode.toString());
+  };
+
+  const convertToHSL = (hex: string) => {
+    // Convert hex to HSL format for CSS custom properties
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h = 0, s = 0, l = (max + min) / 2;
+
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+    }
+
+    return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
+  };
+
+  const adjustBrightness = (hex: string, percent: number) => {
+    const num = parseInt(hex.replace("#", ""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = (num >> 16) + amt;
+    const G = (num >> 8 & 0x00FF) + amt;
+    const B = (num & 0x0000FF) + amt;
+    return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+      (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+      (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
   };
 
   const handleThemeChange = (themeId: string) => {
     setSelectedTheme(themeId);
-    applyTheme(themeId, isDarkMode);
-  };
-
-  const handleModeChange = (darkMode: boolean) => {
-    setIsDarkMode(darkMode);
-    applyTheme(selectedTheme, darkMode);
+    applyTheme(themeId);
   };
 
   return (
@@ -125,66 +150,15 @@ const Settings = () => {
                 </h1>
               </div>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Customize your MS TWENTINITY experience with different color themes and display preferences
+                Customize your MS TWENTINITY experience with different color themes
               </p>
             </motion.div>
-
-            {/* Dark/Light Mode Toggle */}
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="mb-12"
-            >
-              <h2 className="text-2xl font-display font-semibold text-foreground mb-6">
-                Display Mode
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <Button
-                  variant={isDarkMode ? "default" : "outline"}
-                  onClick={() => handleModeChange(true)}
-                  className="h-16 flex items-center gap-3 text-left justify-start"
-                >
-                  <Moon className="w-5 h-5" />
-                  <div>
-                    <div className="font-semibold">Dark Mode</div>
-                    <div className="text-sm opacity-70">Easy on the eyes</div>
-                  </div>
-                  {isDarkMode && <Check className="w-4 h-4 ml-auto" />}
-                </Button>
-                
-                <Button
-                  variant={!isDarkMode ? "default" : "outline"}
-                  onClick={() => handleModeChange(false)}
-                  className="h-16 flex items-center gap-3 text-left justify-start"
-                >
-                  <Sun className="w-5 h-5" />
-                  <div>
-                    <div className="font-semibold">Light Mode</div>
-                    <div className="text-sm opacity-70">Bright and clean</div>
-                  </div>
-                  {!isDarkMode && <Check className="w-4 h-4 ml-auto" />}
-                </Button>
-
-                <Button
-                  variant="outline"
-                  className="h-16 flex items-center gap-3 text-left justify-start opacity-50 cursor-not-allowed"
-                  disabled
-                >
-                  <Monitor className="w-5 h-5" />
-                  <div>
-                    <div className="font-semibold">Auto</div>
-                    <div className="text-sm opacity-70">Coming soon</div>
-                  </div>
-                </Button>
-              </div>
-            </motion.section>
 
             {/* Color Themes */}
             <motion.section
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
               <h2 className="text-2xl font-display font-semibold text-foreground mb-6">
                 Color Themes
@@ -232,14 +206,13 @@ const Settings = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
               className="mt-12 text-center"
             >
               <Button
                 variant="outline"
                 onClick={() => {
                   handleThemeChange('gold');
-                  handleModeChange(true);
                 }}
                 className="px-8"
               >
