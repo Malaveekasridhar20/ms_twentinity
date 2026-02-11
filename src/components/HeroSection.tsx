@@ -12,6 +12,19 @@ export const HeroSection = () => {
   const [showText, setShowText] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     // Check theme
@@ -32,6 +45,12 @@ export const HeroSection = () => {
   }, []);
 
   useEffect(() => {
+    // Show text immediately on mobile or light theme
+    if (isMobile || !isDarkTheme) {
+      setShowText(true);
+      return;
+    }
+
     const video = videoRef.current;
     if (!video || !isDarkTheme) return; // Only run video logic in dark theme
 
@@ -55,23 +74,22 @@ export const HeroSection = () => {
       video.loop = false;
     };
 
+    // Show text after 2 seconds if video hasn't triggered it (fallback)
+    const fallbackTimer = setTimeout(() => {
+      setShowText(true);
+    }, 2000);
+
     video.addEventListener('timeupdate', handleTimeUpdate);
     video.addEventListener('ended', handleVideoEnd);
     video.addEventListener('loadeddata', handleLoadedData);
 
     return () => {
+      clearTimeout(fallbackTimer);
       video.removeEventListener('timeupdate', handleTimeUpdate);
       video.removeEventListener('ended', handleVideoEnd);
       video.removeEventListener('loadeddata', handleLoadedData);
     };
-  }, [showText, isDarkTheme]);
-
-  // Show text immediately in light theme
-  useEffect(() => {
-    if (!isDarkTheme) {
-      setShowText(true);
-    }
-  }, [isDarkTheme]);
+  }, [showText, isDarkTheme, isMobile]);
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden hero-radial-bg scene-3d">
