@@ -27,6 +27,12 @@ export const HeroSection = () => {
   }, []);
 
   useEffect(() => {
+    // Show text immediately on mobile for better performance
+    if (isMobile) {
+      setShowText(true);
+      return;
+    }
+    
     // Check theme
     const checkTheme = () => {
       const isDark = document.documentElement.classList.contains('dark') || 
@@ -42,7 +48,7 @@ export const HeroSection = () => {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
     return () => observer.disconnect();
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     // Show text immediately on mobile or light theme
@@ -93,20 +99,31 @@ export const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden hero-radial-bg scene-3d">
-      {/* Dark Theme - Video Background */}
+      {/* Dark Theme - Video Background (Desktop) or Static Background (Mobile) */}
       {isDarkTheme && (
         <div className="absolute inset-0 z-0">
-          <video
-            ref={videoRef}
-            className="w-full h-full object-cover"
-            autoPlay
-            muted
-            playsInline
-            preload="metadata"
-          >
-            <source src="/hero-video.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          {/* Show video only on desktop for better performance */}
+          {!isMobile && (
+            <video
+              ref={videoRef}
+              className="w-full h-full object-cover"
+              autoPlay
+              muted
+              playsInline
+              preload="none"
+              poster={heroGeometric}
+            >
+              <source src="/hero-video.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          )}
+          
+          {/* Static background for mobile - faster loading */}
+          {isMobile && (
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black opacity-50"></div>
+            </div>
+          )}
           
           {/* Overlay for better text readability */}
           <div className="absolute inset-0 bg-black/50" />
@@ -114,22 +131,30 @@ export const HeroSection = () => {
         </div>
       )}
 
-      {/* Light Theme - Original Background */}
+      {/* Light Theme - Optimized Background */}
       {!isDarkTheme && (
         <>
-          {/* 3D Animated Background Layers */}
-          <AnimatedBackground />
-          <Floating3DElements />
-          <GeometricGrid />
-          <CSS3DAnimations />
+          {/* 3D Animated Background Layers - Only on desktop */}
+          {!isMobile && (
+            <>
+              <AnimatedBackground />
+              <Floating3DElements />
+              <GeometricGrid />
+              <CSS3DAnimations />
+            </>
+          )}
           
           {/* Background Image with 3D effect */}
           <div className="absolute inset-0" style={{ zIndex: 5 }}>
-            <img
-              src={heroGeometric}
-              alt="Abstract geometric design"
-              className="w-full h-full object-cover opacity-20 transform-3d hover-tilt"
-            />
+            {!isMobile ? (
+              <img
+                src={heroGeometric}
+                alt="Abstract geometric design"
+                className="w-full h-full object-cover opacity-20 transform-3d hover-tilt"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-white via-gray-50 to-gray-100 opacity-90" />
+            )}
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-background/60 to-background" />
           </div>
         </>
