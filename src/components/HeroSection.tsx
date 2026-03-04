@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { scrollToElement } from '@/utils/smoothScroll';
 import { AnimatedBackground, Floating3DElements, GeometricGrid } from '@/components/AnimatedBackground';
 import { CSS3DAnimations } from '@/components/CSS3DAnimations';
@@ -11,6 +12,7 @@ export const HeroSection = () => {
   const [showText, setShowText] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check theme
@@ -245,7 +247,7 @@ export const HeroSection = () => {
                     : 'border-foreground/20 text-foreground hover:bg-foreground/10'
                 }`}
                 onClick={() => {
-                  window.location.href = '/services';
+                  navigate('/services');
                 }}
               >
                 View Our Services
