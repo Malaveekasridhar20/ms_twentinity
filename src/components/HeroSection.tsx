@@ -3,7 +3,6 @@ import { ArrowRight, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useRef, useState } from 'react';
 import { scrollToElement } from '@/utils/smoothScroll';
-import heroGeometric from '@/assets/hero-geometric.jpg';
 import { AnimatedBackground, Floating3DElements, GeometricGrid } from '@/components/AnimatedBackground';
 import { CSS3DAnimations } from '@/components/CSS3DAnimations';
 
@@ -110,13 +109,9 @@ export const HeroSection = () => {
           <GeometricGrid />
           <CSS3DAnimations />
           
-          {/* Background Image with 3D effect */}
+          {/* Background gradient with 3D effect */}
           <div className="absolute inset-0" style={{ zIndex: 5 }}>
-            <img
-              src={heroGeometric}
-              alt="Abstract geometric design"
-              className="w-full h-full object-cover opacity-20 transform-3d hover-tilt"
-            />
+            <div className="w-full h-full bg-gradient-to-br from-gray-50 via-white to-gray-100 opacity-90" />
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-background/60 to-background" />
           </div>
         </>
